@@ -36,4 +36,13 @@ export const projects: Project[] = [
     imageUrl: "https://picsum.photos/id/1025/600/400",
     // Add your codeUrl here when it's available
   },
+  {
+    id: 4,
+    title: "Task Manager App",
+    category: "Web Development",
+    description: "A simple yet effective task management application that allows users to create, update, and delete tasks with ease.",
+    imageUrl: "https://picsum.photos/id/1024/600/400",
+    // liveUrl: "https://ashirwad-mishra.github.io/my-portfolio/",
+    codeUrl: "https://github.com/Ashirwad-Mishra/to_do_app",
+  }
 ];
