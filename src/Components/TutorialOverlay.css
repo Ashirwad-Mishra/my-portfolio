@@ -1,0 +1,19 @@
+/* src/Components/TutorialOverlay.css */
+
+/* This defines the animation for the card sliding up */
+@keyframes slideInUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* This class applies the animation to our card */
+.tutorial-card-animated {
+  /* We use the animation defined above */
+  animation: slideInUp 0.5s ease-out forwards;
+}

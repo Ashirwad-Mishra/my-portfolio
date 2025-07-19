@@ -2,6 +2,8 @@
 import { useState, Suspense, useRef, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import './App.css';
+import { useFirstVisit } from './hooks/useFirstVisit';
+import { TutorialOverlay } from './Components/TutorialOverlay';
 
 // Import all our components
 import Workbench from './Components/Workbench';
@@ -12,10 +14,10 @@ import ContactView from './Components/ContactView';
 import WritingsView from './Components/WritingsView';
 
 export default function App() {
-  const [view, setView] = useState('workbench'); // 'workbench', 'about', 'projects', 'skills', 'contact', 'writings'
+  const [view, setView] = useState('workbench');
   const canvasRef = useRef<HTMLDivElement>(null);
+  const { isFirstVisit, setIsFirstVisit } = useFirstVisit();
 
-  // This effect handles the fade transition between the 3D view and the 2D panels
   useEffect(() => {
     const canvasElement = canvasRef.current;
     if (canvasElement) {
@@ -33,6 +35,17 @@ export default function App() {
     setView('workbench');
   };
 
+  const handleCloseTutorial = () => {
+    setIsFirstVisit(false);
+  };
+
+  // --- THIS IS THE FIX ---
+  // If it's the first visit, we ONLY render the tutorial.
+  if (isFirstVisit) {
+    return <TutorialOverlay onClose={handleCloseTutorial} />;
+  }
+
+  // Otherwise, we render the main application.
   return (
     <main className="app-main">
       {/* 3D Scene Container */}
@@ -44,7 +57,6 @@ export default function App() {
         </Canvas>
       </div>
       
-      {/* --- FIXED --- Header with correct syntax */}
       <div className="header-title">
           <h1>Ashirwad Mishra</h1>
           <p>Digital Atelier</p>
