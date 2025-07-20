@@ -1,7 +1,6 @@
-// src/Components/TutorialOverlay.tsx
-import { useState } from 'react';
-import './Tutorial.css'; // Make sure you have created Tutorial.css
-
+// src/Components/Tutorial.tsx
+import { useState, useEffect } from 'react';
+import './Tutorial.css'; 
 const tutorialSteps = [
   {
     title: "Welcome!",
@@ -21,20 +20,34 @@ const tutorialSteps = [
   },
 ];
 
-interface TutorialOverlayProps {
-  onClose: () => void;
-}
-
-export function TutorialOverlay({ onClose }: TutorialOverlayProps) {
+export default function Tutorial() {
   const [step, setStep] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
+
+  // On the first load, check if the tutorial has been seen before.
+  useEffect(() => {
+    const hasSeenTutorial = localStorage.getItem('hasSeenAtelierTutorial');
+    if (!hasSeenTutorial) {
+      setIsVisible(true);
+    }
+  }, []);
 
   const handleNext = () => {
     if (step < tutorialSteps.length - 1) {
       setStep(step + 1);
     } else {
-      onClose(); // Call the onClose prop when finished
+      handleClose();
     }
   };
+
+  const handleClose = () => {
+    localStorage.setItem('hasSeenAtelierTutorial', 'true');
+    setIsVisible(false);
+  };
+
+  if (!isVisible) {
+    return null;
+  }
 
   const currentStep = tutorialSteps[step];
   const isLastStep = step === tutorialSteps.length - 1;
@@ -45,9 +58,9 @@ export function TutorialOverlay({ onClose }: TutorialOverlayProps) {
         <h3>{currentStep.title}</h3>
         <p>{currentStep.text}</p>
         <div className="tutorial-actions">
-          <button onClick={onClose} className="skip-button">Skip</button>
+          <button onClick={handleClose} className="skip-button">Skip</button>
           <button onClick={handleNext} className="next-button">
-            {isLastStep ? "Start Exploring" : "Next"}
+            {isLastStep ? "Finish" : "Next"}
           </button>
         </div>
       </div>

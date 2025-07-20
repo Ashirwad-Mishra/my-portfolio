@@ -2,8 +2,6 @@
 import { useState, Suspense, useRef, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import './App.css';
-import { useFirstVisit } from './hooks/useFirstVisit';
-import { TutorialOverlay } from './Components/TutorialOverlay';
 
 // Import all our components
 import Workbench from './Components/Workbench';
@@ -12,22 +10,18 @@ import ProjectsView from './Components/ProjectsView';
 import SkillsView from './Components/SkillsView';
 import ContactView from './Components/ContactView';
 import WritingsView from './Components/WritingsView';
+import Tutorial from './Components/Tutorial'; // Import the new Tutorial component
 
 export default function App() {
   const [view, setView] = useState('workbench');
   const canvasRef = useRef<HTMLDivElement>(null);
-  const { isFirstVisit, setIsFirstVisit } = useFirstVisit();
 
+  // This effect handles the fade transition between the 3D view and the 2D panels
   useEffect(() => {
     const canvasElement = canvasRef.current;
     if (canvasElement) {
-      if (view === 'workbench') {
-        canvasElement.style.opacity = "1";
-        canvasElement.style.pointerEvents = 'auto';
-      } else {
-        canvasElement.style.opacity = "0";
-        canvasElement.style.pointerEvents = 'none';
-      }
+      canvasElement.style.opacity = view === 'workbench' ? "1" : "0";
+      canvasElement.style.pointerEvents = view === 'workbench' ? 'auto' : 'none';
     }
   }, [view]);
 
@@ -35,22 +29,13 @@ export default function App() {
     setView('workbench');
   };
 
-  const handleCloseTutorial = () => {
-    setIsFirstVisit(false);
-  };
-
-  // --- THIS IS THE FIX ---
-  // If it's the first visit, we ONLY render the tutorial.
-  if (isFirstVisit) {
-    return <TutorialOverlay onClose={handleCloseTutorial} />;
-  }
-
-  // Otherwise, we render the main application.
   return (
     <main className="app-main">
-      {/* 3D Scene Container */}
+      {/* The Tutorial will automatically show itself on the first visit */}
+      <Tutorial />
+
       <div ref={canvasRef} className="canvas-container">
-        <Canvas shadows camera={{ position: [0, 2, 5], fov: 50 }}>
+        <Canvas shadows camera={{ position: [0, 4, 8], fov: 50 }}>
           <Suspense fallback={null}>
             <Workbench setView={setView} />
           </Suspense>
@@ -62,7 +47,6 @@ export default function App() {
           <p>Digital Atelier</p>
       </div>
 
-      {/* 2D UI Overlay Views */}
       <AboutView visible={view === 'about'} onBack={handleBack} />
       <ProjectsView visible={view === 'projects'} onBack={handleBack} />
       <SkillsView visible={view === 'skills'} onBack={handleBack} />

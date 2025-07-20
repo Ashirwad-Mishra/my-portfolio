@@ -7,6 +7,7 @@ const socialLinks = {
   github: "https://github.com/Ashirwad-Mishra",
   linkedin: "https://www.linkedin.com/in/ashirwad-mishra-6248b8292/",
   twitter: "https://twitter.com/your-handle",
+  leetCode: "https://leetcode.com/u/Champians_Knight/",
 };
 
 type ContactViewProps = {
@@ -55,6 +56,10 @@ export default function ContactView({ visible, onBack }: ContactViewProps) {
             <a href={socialLinks.twitter} target="_blank" rel="noopener noreferrer">
               <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/twitter/twitter-original.svg" alt="Twitter" />
               Twitter
+            </a>
+            <a href={socialLinks.leetCode} target="_blank" rel="noopener noreferrer">
+              <img src="https://miro.medium.com/v2/resize:fit:947/1*oz2LpDFoQQJjXmxEPe2RsA.png" alt="LeetCode" />
+              LeetCode
             </a>
           </div>
         </div>
